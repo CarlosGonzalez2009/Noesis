@@ -1,0 +1,172 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+} nav ul li a.login-link { 
+    color: #94D2BD; /* Cor fixa que você quer para o Login */ 
+    text-decoration: none; 
+    transition: color 0.3s ease; 
+} av ul li a.login-link:hover { 
+    color: #94D2BD; 
+} body { 
+    font-family: 'Arial', sans-serif; 
+    line-height: 1.6; 
+    background-color: #f9f9f9; 
+    color: #333; 
+} header { 
+    background-color: rgba(101, 158, 139, 0.9); 
+    color: white; 
+    padding: 30px 0; 
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); 
+} .header-container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px; 
+} .logo { 
+    font-size: 1rem; 
+    font-weight: bold; 
+}nav ul { 
+    list-style: none; 
+    display: flex; 
+} nav ul li { 
+    margin-left: 20px; 
+} nav ul li a { 
+    color: white; 
+    text-decoration: none; 
+    font-size: 1rem; 
+    transition: color 0.3s ease; 
+} nav ul li a:hover { 
+    color: #94D2BD; 
+} .hero { 
+    margin-top: 40px; 
+    padding: 30px 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+} .hero h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 10px; 
+} .hero p { 
+    font-size: 1.2rem; 
+    margin-bottom: 20px; 
+    color: #555; 
+} .hero form { 
+    display: flex; 
+    justify-content: center; 
+} .hero input { 
+    padding: 12px; 
+    font-size: 1rem; 
+    margin-right: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    background-color: #f4f4f4; 
+    transition: border-color 0.3s ease; 
+} .hero input:focus { 
+    border-color: #94D2BD; 
+    outline: none; 
+} .hero button { 
+    padding: 12px 20px; 
+    background-color: #94D2BD; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+} .hero button:hover { 
+    background-color: #7A9A8B; /* Um tom mais escuro */ 
+} .portfolio { 
+    padding: 50px 20px; 
+    background-color: #ffffff; 
+    margin-bottom: 50px; 
+} .portfolio h2 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    text-align: center; 
+    color: #333; 
+} .portfolio-item { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-bottom: 30px; 
+    text-align: center; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    padding: 30px; 
+    background-color: rgba(255, 255, 255, 0.9); /* Mais leve com opacidade */ 
+    border-radius: 10px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+} .portfolio-item:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+} .portfolio-item h3 { 
+    font-size: 1.8rem; 
+    color: #333; 
+    margin-bottom: 10px; 
+} .portfolio-item p { 
+    font-size: 1rem; 
+    color: #555; 
+} .portfolio-item .portfolio-img img { 
+    width: 100%; 
+    max-width: 500px; 
+    border-radius: 10px; 
+    transition: transform 0.3s ease; 
+} .portfolio-item .portfolio-img img:hover { 
+    transform: scale(1.1); 
+} .news { 
+    padding: 50px 20px; 
+    background-color: #fafafa; 
+} .news h2 { 
+    font-size: 2rem; 
+    margin-bottom: 20px; 
+    text-align: center; 
+    color: #333; 
+} .news-items { 
+    display: flex; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+} .news-item { 
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 20px; 
+    width: 48%; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+} .news-item:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+} .news-item h3 {
+    font-size: 1.2rem; 
+    color: #333; 
+    margin-bottom: 10px; 
+} .news-item p { 
+    font-size: 1rem; 
+    margin-bottom: 10px; 
+} .news-item a { 
+    color: #94D2BD; 
+    text-decoration: none;
+    transition: color 0.3s ease; 
+} .news-item a:hover { 
+    color: #7A9A8B; 
+} footer { 
+    padding: 20px; 
+    background-color: rgba(101, 158, 139, 0.9); /* Opacidade também no rodapé */ 
+    color: white; 
+    text-align: center; 
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+} footer form { 
+    display: inline-block; 
+} footer button { 
+    padding: 12px 20px; 
+    background-color: #94D2BD; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 1rem; 
+    transition: background-color 0.3s ease; 
+} footer button:hover { 
+        background-color: #7A9A8B; 
+}

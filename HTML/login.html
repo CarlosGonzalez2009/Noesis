@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noesis - Login</title>
+    <link rel="stylesheet" href="/login.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/logo.png" alt="logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/curso" >Cursos</a></li>
+                    <li><a href="/explore" >Explore</a></li>
+                    <li><a href="/opt" >Oportunidades</a></li>
+                    <li><a href="/help" >Help-center</a></li>
+                    <li><a href="/login" class="register-links">Login</a></li>
+                    <li><a href="/registro" >Registrar-se</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="register-section">
+            <div class="register-container">
+                <h1>Fazer Login</h1>
+                <form action="/logar" method="POST">
+                    <div class="input-group">
+                        <label for="usuario">Usuário</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Digite seu nome de usuário" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                    </div>
+                    <button type="submit">Entrar</button>
+                </form>
+                <div class="register-links">
+                    <a href="/registro">Não tem uma conta? Crie uma aqui.</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <form action="#" method="POST">
+            <label for="subscribe">Gostaria de se inscrever?</label>
+            <button type="submit">Subscrição</button>
+        </form>
+    </footer>
+</body>
+
+</html>

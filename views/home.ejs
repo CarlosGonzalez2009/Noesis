@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noesis - Home</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/logo.png" alt="logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/home" class="login-link">Início</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Explore</a></li>
+                    <li><a href="#">Oportunidades</a></li>
+                    <li><a href="#">Help-center</a></li>
+                    <!-- Não há mais links de Login ou Registrar -->
+                    <li><a href="/sair">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Bem-vindo, <%= usuario %></h1>  <!-- Aqui o nome do usuário é injetado com EJS -->
+            <p>Escolha o melhor caminho para o seu negócio.</p>
+            <form action="#" method="GET">
+                <input type="text" placeholder="O que você deseja aprender hoje?" name="search">
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
+
+        <section class="portfolio">
+            <h2>Portfólio</h2>
+            <div class="portfolio-item">
+                <div class="portfolio-img">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAACyCAMAAACnS4D4AAAAflBMVEX///8AAADz8/OJiYn39/ff39/q6upDQ0MtLS0kJCT8/PyMjIx1dXUdHR1cXFyAgIDT09Pj4+Ompqa5ubmsrKzPz8+0tLSgoKBubm5+fn5hYWGTk5MNDQ3X19dRUVE3NzdUVFRKSkpAQEAWFhbCwsJwcHAhISE0NDSZmZkqKiqEaKURAAAK10lEQVR4nO1d2WKqMBAFRFRsK1YU16qVWvv/P3gNkGWSAHNRBCXnqRUCk0MymS1gWQYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGCeZu0xK0Ft6PvWlahrYisq+YNi1FKxGcCTf2V9NytBDXGZUhblqU1iGyGd79poVpF3a/toBx0+K0Cc7ShjA6meHTlvHRtEhtwfxb4cbo5BTOj4aaK5qWqw0I9dTYdq9pyRpHoJtRRicTuG/51HRdJ+fOKKOTdwUzKsWpq3ayuyqjxu6snVw2ozJ0UifLzkIeDk0L2gR2SHLsWdOSNoEJkpxzF3Wyjx06ndTJMyw7ndTJRyQ5h6YFbQJ97NDppE4eI8k5dzHH574j2emkTl5gJ5bRyQU4Ni1oE5hih04ndXIPSc7J6OQCdEInO+sQ/I/Wyf2GBH4gSO4OepJfSHJevu4izd29gd+MTk7g0twdnCHY2MVL5/h4NnwAfve3SHJeN8cHcndQJ6NjFy+qkx2YadhCq+WAJOc1c3xKfckKHO5y7GI3LJshWDv55XSyo83dSToZS86koU7UhDBnLaqok18pdtEf5PVy64ATu2cn+0X1JR3XyYti624HTsbq5PeXiF30jyXd3IPT0Tr5BexkF+ExdVUn46I0UCcfk
