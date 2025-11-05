@@ -1,50 +1,78 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Center - Noesis</title>
-    <link rel="stylesheet" href="/pags.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuda – Noesis</title>
+  <link rel="stylesheet" href="pags.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo"><img src="/logo.png" alt="logo"></div>
-            <nav>
-                <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/curso" >Cursos</a></li>
-                    <li><a href="/explore" >Explore</a></li>
-                    <li><a href="/opt">Oportunidades</a></li>
-                    <li><a href="/help" class="register-links">Help-center</a></li>
-                    <li><a href="/login" >Login</a></li>
-                    <li><a href="/registro" >Registrar-se</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        <section class="help-center-section">
-            <div class="container">
-                <h2>Ajuda e Suporte</h2>
-                <p>Encontre respostas para as perguntas mais frequentes ou entre em contato com o suporte.</p>
-                <div class="faq">
-                    <h3>Perguntas Frequentes</h3>
-                    <ul>
-                        <li><strong>Como me inscrever?</strong><br>Para se inscrever, clique em "Registrar-se" no menu superior.</li>
-                        <li><strong>Como acessar meus cursos?</strong><br>Após o login, você pode acessar todos os cursos disponíveis.</li>
-                        <li><strong>Como resetar minha senha?</strong><br>Clique em "Esqueceu a senha?" na página de login.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
+<header class="navbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="/logo.png" alt="Noesis Logo"></a>
+    <nav>
+      <ul>
+          <li><a href="/" >Início</a></li>
+          <li><a href="/curso" >Cursos</a></li>
+          <li><a href="/explore" >Explore</a></li>
+          <li><a href="/opt">Oportunidades</a></li>
+          <li><a href="/help" class="active">Ajuda</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/registro" class="btn">Registrar-se</a></li>
+        </ul>
+    </nav>
+  </div>
+</header>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2025 Noesis. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+<section class="hero">
+  <div class="container">
+    <h1>Central de <span>Ajuda</span></h1>
+    <p>Encontre respostas, tutoriais e suporte para aproveitar ao máximo nossos cursos e oportunidades.</p>
+  </div>
+</section>
+
+<section class="help">
+  <div class="container">
+    <div class="explore-grid">
+      <div class="card">
+        <h3>FAQ</h3>
+        <p>Confira as perguntas mais frequentes e tire suas dúvidas rapidamente.</p>
+        <a href="#" class="btn primary">Ver FAQ</a>
+      </div>
+      <div class="card">
+        <h3>Suporte Técnico</h3>
+        <p>Entre em contato com nosso time de suporte para resolver problemas técnicos.</p>
+        <a href="#" class="btn primary">Abrir Chamado</a>
+      </div>
+      <div class="card">
+        <h3>Tutoriais</h3>
+        <p>Aprenda a utilizar nossas ferramentas com guias passo a passo e vídeos explicativos.</p>
+        <a href="#" class="btn primary">Ver Tutoriais</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Noesis – Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<button id="theme-toggle">🌙</button>
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+const currentTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-theme", currentTheme);
+toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+toggleBtn.addEventListener("click", () => {
+  const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.body.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+  toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+});
+</script>
+
 </body>
 </html>

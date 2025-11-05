@@ -1,59 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore - Noesis</title>
-    <link rel="stylesheet" href="/pags.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore – Noesis</title>
+  <link rel="stylesheet" href="pags.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo"><img src="/logo.png" alt="logo"></div>
-            <nav>
-                    <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/curso" >Cursos</a></li>
-                    <li><a href="/explore" class="register-links">Explore</a></li>
-                    <li><a href="/opt">Oportunidades</a></li>
-                    <li><a href="/help">Help-center</a></li>
-                    <li><a href="/login" >Login</a></li>
-                    <li><a href="/registro" >Registrar-se</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        <section class="explore-section">
-            <div class="container">
-                <h2>Explore Novos Caminhos</h2>
-                <p>Encontre novos tópicos e áreas de aprendizado que podem transformar sua carreira e sua vida pessoal.</p>
-                <div class="explore-categories">
-                    <div class="category-card">
-                        <h3>Desenvolvimento Pessoal</h3>
-                        <p>Aprenda habilidades que irão aprimorar sua vida pessoal e profissional. Desde a gestão do tempo até a inteligência emocional.</p>
-                        <a href="#">Explore Mais</a>
-                    </div>
-                    <div class="category-card">
-                        <h3>Tecnologia</h3>
-                        <p>Explore as últimas inovações e tecnologias como inteligência artificial, machine learning, big data e muito mais.</p>
-                        <a href="#">Explore Mais</a>
-                    </div>
-                    <div class="category-card">
-                        <h3>Negócios</h3>
-                        <p>Aprenda sobre gestão de empresas, empreendedorismo e estratégias que farão seu negócio crescer.</p>
-                        <a href="#">Explore Mais</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+<header class="navbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="/logo.png" alt="Noesis Logo"></a>
+    <nav>
+       <ul>
+          <li><a href="/" >Início</a></li>
+          <li><a href="/curso" >Cursos</a></li>
+          <li><a href="/explore" class="active">Explore</a></li>
+          <li><a href="/opt">Oportunidades</a></li>
+          <li><a href="/help">Ajuda</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/registro" class="btn">Registrar-se</a></li>
+        </ul>
+    </nav>
+  </div>
+</header>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2025 Noesis. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+<section class="hero">
+  <div class="container">
+    <h1>Descubra novas <span>Oportunidades</span></h1>
+    <p>Explore cursos, eventos e materiais que vão acelerar sua carreira e aprendizado.</p>
+  </div>
+</section>
+
+<section class="explore">
+  <div class="container">
+    <div class="explore-grid">
+      <div class="card">
+        <h3>Evento de Tecnologia</h3>
+        <p>Participe de workshops, palestras e hackathons com especialistas do mercado.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+      <div class="card">
+        <h3>Biblioteca de Cursos</h3>
+        <p>Acesse diversos cursos em várias áreas da tecnologia, design e marketing digital.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+      <div class="card">
+        <h3>Programa de Mentoria</h3>
+        <p>Receba orientação de profissionais experientes e aprenda na prática.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Noesis – Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<button id="theme-toggle">🌙</button>
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+const currentTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-theme", currentTheme);
+toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+toggleBtn.addEventListener("click", () => {
+  const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.body.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+  toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+});
+</script>
+
 </body>
 </html>
+ 

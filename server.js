@@ -7,9 +7,15 @@ const path = require('path');
 const app = express();
 const porta = 3000;
 
+const expressLayouts = require('express-ejs-layouts');
+
 // Configuração do EJS
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Localização das views
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(expressLayouts); // deve vir DEPOIS do view engine
+app.set('layout', 'layout'); // procura o arquivo views/layout.ejs
+
 
 // Serve arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,49 +40,78 @@ function protegerRota(req, res, proximo) {
     }
 }
 
-// Rotas
+// Rotas públicas
 app.get('/', (req, res) => {
-    res.redirect('/index');
-});
-
-app.get('/registro', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'registro.html'));
-});
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
-});
-
-
-app.get('/curso', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'curso.html'));
+  res.redirect('/index');
 });
 
 app.get('/explore', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'explore.html'));
+  res.sendFile(path.join(__dirname, 'HTML', 'explore.html'));
+});
+
+app.get('/curso', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'curso.html'));
 });
 
 app.get('/help', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'help-center.html'));
+  res.sendFile(path.join(__dirname, 'HTML', 'help-center.html'));
 });
 
 app.get('/opt', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html'));
+  res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html'));
+});
+
+app.get('/registro', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'registro.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
 });
 
 app.get('/index', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
-});
-
-app.get('/home', protegerRota, (req, res) => {
-    // Passa o nome do usuário para a view 'home.ejs'
-    res.render('home', { usuario: req.session.usuario });
+  res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
 });
 
 app.get('/erro', (req, res) => {
-    res.sendFile(path.join(__dirname, 'HTML', 'erro.html'));
+  res.sendFile(path.join(__dirname, 'HTML', 'erro.html'));
 });
 
+// Rotas protegidas (somente com login)
+app.get('/curso2', protegerRota, (req, res) => {
+  res.render('curso2', { 
+    usuario: req.session.usuario,
+    titulo: 'Cursos' // 👈 Adiciona aqui
+  });
+});
+
+app.get('/explore2', protegerRota, (req, res) => {
+  res.render('explore2', { 
+    usuario: req.session.usuario,
+    titulo: 'Explorar'
+  });
+});
+
+app.get('/opt2', protegerRota, (req, res) => {
+  res.render('opt2', { 
+    usuario: req.session.usuario,
+    titulo: 'Oportunidades'
+  });
+});
+
+app.get('/help2', protegerRota, (req, res) => {
+  res.render('help2', { 
+    usuario: req.session.usuario,
+    titulo: 'Ajuda'
+  });
+});
+
+app.get('/home', protegerRota, (req, res) => {
+  res.render('home', { 
+    usuario: req.session.usuario,
+    titulo: 'Início'
+  });
+});
 // Registro de usuário
 app.post('/registrar', async (req, res) => {
     const cliente = new MongoClient(urlMongo);

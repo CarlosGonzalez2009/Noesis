@@ -1,61 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-BR" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noesis - Login</title>
-    <link rel="stylesheet" href="/login.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – Noesis</title>
+  <link rel="stylesheet" href="login.css">
 </head>
-
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="/logo.png" alt="logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/curso" >Cursos</a></li>
-                    <li><a href="/explore" >Explore</a></li>
-                    <li><a href="/opt" >Oportunidades</a></li>
-                    <li><a href="/help" >Help-center</a></li>
-                    <li><a href="/login" class="register-links">Login</a></li>
-                    <li><a href="/registro" >Registrar-se</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        <section class="register-section">
-            <div class="register-container">
-                <h1>Fazer Login</h1>
-                <form action="/logar" method="POST">
-                    <div class="input-group">
-                        <label for="usuario">Usuário</label>
-                        <input type="text" id="usuario" name="usuario" placeholder="Digite seu nome de usuário" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="senha">Senha</label>
-                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-                    </div>
-                    <button type="submit">Entrar</button>
-                </form>
-                <div class="register-links">
-                    <a href="/registro">Não tem uma conta? Crie uma aqui.</a>
-                </div>
-            </div>
-        </section>
-    </main>
+<header class="navbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="/logo.png" alt="Noesis Logo"></a>
+    <nav>
+      <ul>
+          <li><a href="/" >Início</a></li>
+          <li><a href="/curso" >Cursos</a></li>
+          <li><a href="/explore" >Explore</a></li>
+          <li><a href="/opt">Oportunidades</a></li>
+          <li><a href="/help" >Ajuda</a></li>
+          <li><a href="/login" class="active">Login</a></li>
+          <li><a href="/registro" class="btn">Registrar-se</a></li>
+        </ul>
+    </nav>
+  </div>
+</header>
 
-    <footer>
-        <form action="#" method="POST">
-            <label for="subscribe">Gostaria de se inscrever?</label>
-            <button type="submit">Subscrição</button>
-        </form>
-    </footer>
+<section class="auth-page">
+  <div class="auth-box">
+    <h1>Bem-vindo de volta 👋</h1>
+    <p>Faça login para continuar explorando o futuro com a Noesis.</p>
+
+    <form class="auth-form" action="/logar" method="POST">
+      <div class="input-group">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Digite seu nome de usuário" required>
+      </div>
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+      </div>
+      <button type="submit">Entrar</button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Não tem uma conta? <a href="registro.html">Crie uma agora</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Noesis – Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<button id="theme-toggle">🌙</button>
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+const currentTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-theme", currentTheme);
+toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+toggleBtn.addEventListener("click", () => {
+  const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.body.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+  toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+});
+</script>
+
 </body>
-
 </html>

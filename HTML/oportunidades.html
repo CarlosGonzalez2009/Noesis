@@ -1,56 +1,83 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oportunidades - Noesis</title>
-    <link rel="stylesheet" href="/pags.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oportunidades – Noesis</title>
+  <link rel="stylesheet" href="pags.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo"><img src="/logo.png" alt="logo"></div>
-            <nav>
-                <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/curso" >Cursos</a></li>
-                    <li><a href="/explore" >Explore</a></li>
-                    <li><a href="/opt" class="register-links">Oportunidades</a></li>
-                    <li><a href="/help" >Help-center</a></li>
-                    <li><a href="/login" >Login</a></li>
-                    <li><a href="/registro" >Registrar-se</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        <section class="opportunities-section">
-            <div class="container">
-                <h2>Oportunidades de Carreira</h2>
-                <p>Confira as últimas vagas de emprego e estágio em empresas líderes de mercado.</p>
-                <div class="opportunity-list">
-                    <div class="opportunity-card">
-                        <h3>Desenvolvedor Front-End</h3>
-                        <p>Vaga para desenvolvedor Front-End com experiência em React. Enviar currículo para [email@empresa.com].</p>
-                    </div>
-                    <div class="opportunity-card">
-                        <h3>Designer UX/UI</h3>
-                        <p>Procuramos um designer criativo para trabalhar em projetos inovadores de design de interfaces.</p>
-                    </div>
-                    <div class="opportunity-card">
-                        <h3>Analista de Marketing Digital</h3>
-                        <p>Se você tem paixão por marketing digital e adora analisar dados, esta vaga é para você.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+<header class="navbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="/logo.png" alt="Noesis Logo"></a>
+    <nav>
+      <ul>
+          <li><a href="/" >Início</a></li>
+          <li><a href="/curso" >Cursos</a></li>
+          <li><a href="/explore" >Explore</a></li>
+          <li><a href="/opt" class="active">Oportunidades</a></li>
+          <li><a href="/help" >Ajuda</a></li>
+          <li><a href="/login" >Login</a></li>
+          <li><a href="/registro" class="btn">Registrar-se</a></li>
+        </ul>
+    </nav>
+  </div>
+</header>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2025 Noesis. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+<section class="hero">
+  <div class="container">
+    <h1>Descubra as <span>Oportunidades</span></h1>
+    <p>Explore vagas, estágios e programas de capacitação que farão você crescer profissionalmente.</p>
+  </div>
+</section>
+
+<section class="opportunities">
+  <div class="container">
+    <div class="opportunities-grid">
+      <div class="card">
+        <h3>Estágio em Desenvolvimento Web</h3>
+        <p>Trabalhe em projetos reais de front-end e back-end com acompanhamento de profissionais experientes.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+      <div class="card">
+        <h3>Programa de Mentoria em UX/UI</h3>
+        <p>Aprenda e desenvolva suas habilidades em design de interface com mentores especializados.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+      <div class="card">
+        <h3>Vaga: Marketing Digital</h3>
+        <p>Crie campanhas e estratégias digitais que geram resultados reais para empresas e clientes.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+      <div class="card">
+        <h3>Bootcamp de Programação Full Stack</h3>
+        <p>Aprenda de forma prática a construir aplicações completas e modernas do zero ao deploy.</p>
+        <a href="#" class="btn primary">Saiba Mais</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Noesis – Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<button id="theme-toggle">🌙</button>
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+const currentTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-theme", currentTheme);
+toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+toggleBtn.addEventListener("click", () => {
+  const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.body.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+  toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+});
+</script>
+
 </body>
 </html>
