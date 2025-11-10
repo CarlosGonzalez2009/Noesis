@@ -24,16 +24,16 @@
 
   <main class="conteudo">
     <section class="perfil">
-      <img src="<%= usuario.foto || '/img/user-default.png' %>" alt="Foto de perfil" class="foto-perfil">
+      <img src="<%= usuario && usuario.foto ? usuario.foto : '/img/user-default.png' %>" alt="Foto de perfil" class="foto-perfil">
       <div class="info-usuario">
-        <h2>Olá, <%= usuario.usuario %> 👋</h2>
+        <h2>Olá, <%= usuario ? usuario.usuario : 'Visitante' %> 👋</h2>
         <p>Bem-vindo de volta à plataforma!</p>
       </div>
     </section>
 
     <section class="progresso">
       <h3>📚 Seus Cursos</h3>
-      <% if (usuario.cursosEstudados && usuario.cursosEstudados.length > 0) { %>
+      <% if (usuario && usuario.cursosEstudados && usuario.cursosEstudados.length > 0) { %>
         <ul class="lista-cursos">
           <% usuario.cursosEstudados.forEach(curso => { %>
             <li>
@@ -41,7 +41,7 @@
               Duração: <%= curso.duracao %><br>
               Progresso: <%= curso.progresso %>%
               <div class="barra-progresso">
-                <div class="preenchimento" style="width: <%= curso.progresso %>%"></div>
+                <div class="preenchimento" style="width: <%= curso.progresso %>%;"></div>
               </div>
             </li>
           <% }) %>

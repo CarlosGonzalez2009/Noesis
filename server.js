@@ -5,28 +5,27 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressLayouts = require('express-ejs-layouts');
 
-// Importar modelos
-const User = require('./models/users.js');
-const Curso = require('./models/cursos.js');
+const User = require('./models/user');
+const Course = require('./models/course');
 
 const app = express();
 const porta = 3000;
 
-// Conexão com MongoDB Atlas
+// ===== Conexão com MongoDB Atlas =====
 mongoose.connect('mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/sistemaLogin', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('✅ Conectado ao MongoDB Atlas'))
-.catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
+  .then(() => console.log('✅ Conectado ao MongoDB Atlas'))
+  .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
-// Configuração do EJS
+// ===== Configuração do EJS =====
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
-app.set('layout', 'layout'); // layout padrão
+app.set('layout', 'layout'); // arquivo layout.ejs padrão
 
-// Middleware
+// ===== Middleware =====
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,13 +35,13 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// Middleware para deixar o usuário disponível nas views
+// Deixa o usuário disponível nas views
 app.use((req, res, next) => {
   res.locals.usuario = req.session.usuario || null;
   next();
 });
 
-// Middleware de proteção de rotas
+// ===== Função para proteger rotas =====
 function protegerRota(req, res, next) {
   if (req.session.usuario) {
     next();
@@ -51,26 +50,42 @@ function protegerRota(req, res, next) {
   }
 }
 
-// ---------- ROTAS PÚBLICAS ----------
+// ===== ROTAS PÚBLICAS =====
 app.get('/', (req, res) => res.redirect('/index'));
 
-app.get('/login', (req, res) => {
-  res.render('login', { layout: false, titulo: 'Login', erro: null });
+app.get('/index', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
+});
+
+app.get('/explore', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'explore.html'));
+});
+
+app.get('/curso', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'curso.html'));
 });
 
 app.get('/registro', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'registro.html'));
 });
 
-app.get('/index', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
+app.get('/help', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'help-center.html'));
+});
+
+app.get('/opt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html'));
 });
 
 app.get('/erro', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'erro.html'));
 });
 
-// ---------- REGISTRO ----------
+app.get('/login', (req, res) => {
+  res.render('login', { layout: false, titulo: 'Login', erro: null });
+});
+
+// ===== REGISTRO =====
 app.post('/registrar', async (req, res) => {
   try {
     const usuarioExistente = await User.findOne({ usuario: req.body.usuario });
@@ -92,7 +107,7 @@ app.post('/registrar', async (req, res) => {
   }
 });
 
-// ---------- LOGIN ----------
+// ===== LOGIN =====
 app.post('/logar', async (req, res) => {
   try {
     const usuario = await User.findOne({ usuario: req.body.usuario });
@@ -114,23 +129,21 @@ app.post('/logar', async (req, res) => {
   }
 });
 
-// ---------- LOGOUT ----------
+// ===== LOGOUT =====
 app.get('/sair', (req, res) => {
   req.session.destroy(err => {
-    if (err) {
-      return res.send('Erro ao sair');
-    }
+    if (err) return res.send('Erro ao sair');
     res.redirect('/index');
   });
 });
 
-// ---------- ROTAS PROTEGIDAS ----------
+// ===== ROTAS PROTEGIDAS =====
 app.get('/home', protegerRota, (req, res) => {
   res.render('home', { usuario: req.session.usuario, titulo: 'Início' });
 });
 
 app.get('/curso2', protegerRota, async (req, res) => {
-  const cursos = await Curso.find(); // mostra todos os cursos disponíveis
+  const cursos = await Course.find(); // Mostra todos os cursos disponíveis
   res.render('curso2', { usuario: req.session.usuario, cursos, titulo: 'Cursos' });
 });
 
@@ -146,7 +159,7 @@ app.get('/help2', protegerRota, (req, res) => {
   res.render('help2', { usuario: req.session.usuario, titulo: 'Ajuda' });
 });
 
-// ---------- EXEMPLO: ADICIONAR CURSO A UM USUÁRIO ----------
+// ===== ADICIONAR CURSO AO USUÁRIO =====
 app.post('/adicionar-curso', protegerRota, async (req, res) => {
   try {
     const { nome, progresso, duracao } = req.body;
@@ -162,6 +175,7 @@ app.post('/adicionar-curso', protegerRota, async (req, res) => {
   }
 });
 
+// ===== INICIAR SERVIDOR =====
 app.listen(porta, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${porta}/`);
 });
