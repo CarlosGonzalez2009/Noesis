@@ -1,0 +1,128 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--texto);
+  transition: background 0.3s, color 0.3s;
+}
+
+:root {
+  --bg: #f4f4f9;
+  --texto: #222;
+  --card: #fff;
+}
+
+.dark-mode {
+  --bg: #121212;
+  --texto: #eee;
+  --card: #1e1e1e;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.menu-toggle {
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--texto);
+  font-weight: 600;
+}
+
+nav a.logout {
+  color: crimson;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  nav {
+    display: none;
+    flex-direction: column;
+    background: var(--card);
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  nav.ativo {
+    display: flex;
+  }
+}
+
+.conteudo {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.foto-perfil {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.progresso {
+  margin-top: 30px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.lista-cursos {
+  list-style: none;
+  padding: 0;
+}
+
+.lista-cursos li {
+  margin-bottom: 15px;
+}
+
+.barra-progresso {
+  width: 100%;
+  height: 10px;
+  background: #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.preenchimento {
+  height: 10px;
+  background: #4CAF50;
+  border-radius: 5px;
+}

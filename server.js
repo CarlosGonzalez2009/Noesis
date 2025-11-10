@@ -1,72 +1,65 @@
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const mongoose = require('mongoose');
+const expressLayouts = require('express-ejs-layouts');
+
+// Importar modelos
+const User = require('./models/users.js');
+const Curso = require('./models/cursos.js');
 
 const app = express();
 const porta = 3000;
 
-const expressLayouts = require('express-ejs-layouts');
+// Conexão com MongoDB Atlas
+mongoose.connect('mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/sistemaLogin', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ Conectado ao MongoDB Atlas'))
+.catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
 // Configuração do EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(expressLayouts);
+app.set('layout', 'layout'); // layout padrão
 
-app.use(expressLayouts); // deve vir DEPOIS do view engine
-app.set('layout', 'layout'); // procura o arquivo views/layout.ejs
-
-
-// Serve arquivos estáticos da pasta 'public'
+// Middleware
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
-    secret: 'segredo-super-seguro',
-    resave: false,
-    saveUninitialized: true
+  secret: 'segredo-super-seguro',
+  resave: false,
+  saveUninitialized: true
 }));
 
-const urlMongo = 'mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/?retryWrites=true&w=majority&appName=Clusterdopai';
-const nomeBanco = 'sistemaLogin';
+// Middleware para deixar o usuário disponível nas views
+app.use((req, res, next) => {
+  res.locals.usuario = req.session.usuario || null;
+  next();
+});
 
-// Middleware para proteger rotas
-function protegerRota(req, res, proximo) {
-    if (req.session.usuario) {
-        proximo();
-    } else {
-        res.redirect('/login');
-    }
+// Middleware de proteção de rotas
+function protegerRota(req, res, next) {
+  if (req.session.usuario) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
 }
 
-// Rotas públicas
-app.get('/', (req, res) => {
-  res.redirect('/index');
-});
+// ---------- ROTAS PÚBLICAS ----------
+app.get('/', (req, res) => res.redirect('/index'));
 
-app.get('/explore', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'explore.html'));
-});
-
-app.get('/curso', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'curso.html'));
-});
-
-app.get('/help', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'help-center.html'));
-});
-
-app.get('/opt', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html'));
+app.get('/login', (req, res) => {
+  res.render('login', { layout: false, titulo: 'Login', erro: null });
 });
 
 app.get('/registro', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'registro.html'));
-});
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
 });
 
 app.get('/index', (req, res) => {
@@ -77,107 +70,98 @@ app.get('/erro', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'erro.html'));
 });
 
-// Rotas protegidas (somente com login)
-app.get('/curso2', protegerRota, (req, res) => {
-  res.render('curso2', { 
-    usuario: req.session.usuario,
-    titulo: 'Cursos' // 👈 Adiciona aqui
+// ---------- REGISTRO ----------
+app.post('/registrar', async (req, res) => {
+  try {
+    const usuarioExistente = await User.findOne({ usuario: req.body.usuario });
+    if (usuarioExistente) {
+      return res.send('Usuário já existe');
+    }
+
+    const senhaCriptografada = await bcrypt.hash(req.body.senha, 10);
+    const novoUsuario = new User({
+      usuario: req.body.usuario,
+      senha: senhaCriptografada
+    });
+
+    await novoUsuario.save();
+    res.redirect('/login');
+  } catch (erro) {
+    console.error('Erro ao registrar usuário:', erro);
+    res.send('Erro ao registrar usuário');
+  }
+});
+
+// ---------- LOGIN ----------
+app.post('/logar', async (req, res) => {
+  try {
+    const usuario = await User.findOne({ usuario: req.body.usuario });
+
+    if (!usuario) {
+      return res.render('login', { layout: false, titulo: 'Login', erro: 'Usuário ou senha incorretos.' });
+    }
+
+    const senhaValida = await bcrypt.compare(req.body.senha, usuario.senha);
+    if (!senhaValida) {
+      return res.render('login', { layout: false, titulo: 'Login', erro: 'Usuário ou senha incorretos.' });
+    }
+
+    req.session.usuario = usuario;
+    res.redirect('/home');
+  } catch (erro) {
+    console.error('Erro ao logar:', erro);
+    res.send('Erro ao realizar login');
+  }
+});
+
+// ---------- LOGOUT ----------
+app.get('/sair', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.send('Erro ao sair');
+    }
+    res.redirect('/index');
   });
+});
+
+// ---------- ROTAS PROTEGIDAS ----------
+app.get('/home', protegerRota, (req, res) => {
+  res.render('home', { usuario: req.session.usuario, titulo: 'Início' });
+});
+
+app.get('/curso2', protegerRota, async (req, res) => {
+  const cursos = await Curso.find(); // mostra todos os cursos disponíveis
+  res.render('curso2', { usuario: req.session.usuario, cursos, titulo: 'Cursos' });
 });
 
 app.get('/explore2', protegerRota, (req, res) => {
-  res.render('explore2', { 
-    usuario: req.session.usuario,
-    titulo: 'Explorar'
-  });
+  res.render('explore2', { usuario: req.session.usuario, titulo: 'Explorar' });
 });
 
 app.get('/opt2', protegerRota, (req, res) => {
-  res.render('opt2', { 
-    usuario: req.session.usuario,
-    titulo: 'Oportunidades'
-  });
+  res.render('opt2', { usuario: req.session.usuario, titulo: 'Oportunidades' });
 });
 
 app.get('/help2', protegerRota, (req, res) => {
-  res.render('help2', { 
-    usuario: req.session.usuario,
-    titulo: 'Ajuda'
-  });
+  res.render('help2', { usuario: req.session.usuario, titulo: 'Ajuda' });
 });
 
-app.get('/home', protegerRota, (req, res) => {
-  res.render('home', { 
-    usuario: req.session.usuario,
-    titulo: 'Início'
-  });
-});
-// Registro de usuário
-app.post('/registrar', async (req, res) => {
-    const cliente = new MongoClient(urlMongo);
+// ---------- EXEMPLO: ADICIONAR CURSO A UM USUÁRIO ----------
+app.post('/adicionar-curso', protegerRota, async (req, res) => {
+  try {
+    const { nome, progresso, duracao } = req.body;
+    const usuario = await User.findOne({ usuario: req.session.usuario.usuario });
 
-    try {
-        await cliente.connect();
-        const banco = cliente.db(nomeBanco);
-        const usuarios = banco.collection('usuarios');
-        const usuarioExistente = await usuarios.findOne({ usuario: req.body.usuario });
+    usuario.cursosEstudados.push({ nome, progresso, duracao });
+    await usuario.save();
 
-        if (usuarioExistente) {
-            res.send('Usuário já existe');
-        } else {
-            const senhaCriptografada = await bcrypt.hash(req.body.senha, 10);
-            await usuarios.insertOne({ usuario: req.body.usuario, senha: senhaCriptografada });
-            res.redirect('/login');
-        }
-    } catch (erro) {
-        res.send('Erro ao registrar usuário');
-        console.error(erro);
-    } finally {
-        await cliente.close();
-    }
-});
-
-// Login de usuário
-app.post('/logar', async (req, res) => {
-    const cliente = new MongoClient(urlMongo);
-
-    try {
-        await cliente.connect();
-        const banco = cliente.db(nomeBanco);
-        const usuarios = banco.collection('usuarios');
-
-        const usuario = await usuarios.findOne({ usuario: req.body.usuario });
-
-        if (usuario) {
-            const senhaValida = await bcrypt.compare(req.body.senha, usuario.senha);
-            
-            if (senhaValida) {
-                req.session.usuario = usuario.usuario; // Salva o nome do usuário na sessão
-                res.redirect('/home');
-            } else {
-                res.redirect('/erro');
-            }   
-        } else {
-            res.redirect('/erro');
-        }
-    } catch (erro) {
-        res.send('Erro ao realizar login');
-        console.error(erro);
-    } finally {
-        await cliente.close();
-    }
-});
-
-// Logout
-app.get('/sair', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.send('Erro ao sair');
-        }
-        res.redirect('/index');
-    });
+    res.redirect('/curso2');
+  } catch (erro) {
+    console.error('Erro ao adicionar curso:', erro);
+    res.send('Erro ao adicionar curso');
+  }
 });
 
 app.listen(porta, () => {
-    console.log(`Servidor rodando em http://localhost:${porta}/`);
+  console.log(`🚀 Servidor rodando em http://localhost:${porta}/`);
 });

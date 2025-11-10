@@ -19,6 +19,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
     "mongodb": "^6.20.0",
+    "mongoose": "^8.19.3",
     "session": "^0.1.0"
   }
 }

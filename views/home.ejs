@@ -1,87 +1,61 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FutureFest Noesis</title>
-  <link rel="stylesheet" href="/home.css">
+  <title><%= titulo %></title>
+  <link rel="stylesheet" href="/home1.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
-  <header class="reveal">
-    <h1>Olá, <%= usuario %>!</h1>
-    <div class="menu-toggle" id="menu-toggle">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-    </div>
+<body class="<%= tema === 'escuro' ? 'dark-mode' : '' %>">
+  <header class="navbar">
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <h1>FutureFest Noesis</h1>
     <nav id="menu">
       <a href="/home">Início</a>
       <a href="/curso2">Cursos</a>
       <a href="/explore2">Explorar</a>
       <a href="/opt2">Oportunidades</a>
       <a href="/help2">Ajuda</a>
-      <a href="/perfil">Perfil</a>
-      <a href="/sair">Sair</a>
+      <a href="/sair" class="logout">Sair</a>
     </nav>
   </header>
 
-  <main>
-    <!-- Profile -->
-    <div class="profile-header reveal">
-      <div class="profile-photo">
-        <img src="/perfil.jpg" alt="Foto de <%= usuario %>">
+  <main class="conteudo">
+    <section class="perfil">
+      <img src="<%= usuario.foto || '/img/user-default.png' %>" alt="Foto de perfil" class="foto-perfil">
+      <div class="info-usuario">
+        <h2>Olá, <%= usuario.usuario %> 👋</h2>
+        <p>Bem-vindo de volta à plataforma!</p>
       </div>
-      <div class="profile-info">
-        <h2><%= usuario %></h2>
-        <p>Membro desde 01/01/2025</p>
-      </div>
-    </div>
+    </section>
 
-    <!-- Estatísticas -->
-    <section class="stats reveal">
-      <div class="stat">
-        <p>Cursos Concluídos</p>
-        <h3>5</h3>
-      </div>
-      <div class="stat">
-        <p>Oportunidades Aplicadas</p>
-        <h3>3</h3>
-      </div>
-      <div class="stat">
-        <p>Projetos em Andamento</p>
-        <h3>2</h3>
-      </div>
+    <section class="progresso">
+      <h3>📚 Seus Cursos</h3>
+      <% if (usuario.cursosEstudados && usuario.cursosEstudados.length > 0) { %>
+        <ul class="lista-cursos">
+          <% usuario.cursosEstudados.forEach(curso => { %>
+            <li>
+              <strong><%= curso.nome %></strong><br>
+              Duração: <%= curso.duracao %><br>
+              Progresso: <%= curso.progresso %>%
+              <div class="barra-progresso">
+                <div class="preenchimento" style="width: <%= curso.progresso %>%"></div>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>Você ainda não iniciou nenhum curso. Explore <a href="/curso2">novos cursos</a>!</p>
+      <% } %>
     </section>
   </main>
 
-  <footer class="reveal">
-    <p>© 2025 FutureFest Noesis — Todos os direitos reservados.</p>
-  </footer>
-
-  <button id="theme-toggle">🌙</button>
-
   <script>
-    // Tema persistente
-    const toggleBtn = document.getElementById("theme-toggle");
-    const currentTheme = localStorage.getItem("theme") || "light";
-    document.body.setAttribute("data-theme", currentTheme);
-    toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
-    toggleBtn.addEventListener("click", () => {
-      const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      document.body.setAttribute("data-theme", newTheme);
-      localStorage.setItem("theme", newTheme);
-      toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
-    });
-
-    // Toggling the menu
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
-
-    menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('active');
-    });
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('ativo');
+    }
   </script>
 </body>
 </html>

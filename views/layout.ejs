@@ -1,27 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="light">
+<%
+  // Define valores padrão seguros antes de usar
+  const safeTitulo = typeof titulo !== 'undefined' ? titulo : '';
+  const safeUsuario = typeof usuario !== 'undefined' ? usuario : null;
+%>
 <head>
   <meta charset="UTF-8">
-  <title><%= typeof titulo !== 'undefined' ? titulo : 'FutureFest Noesis' %></title>
+  <title><%= safeTitulo || 'FutureFest Noesis' %></title>
   <link rel="stylesheet" href="/home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; margin:0; padding:0; background: var(--bg, #f9f9f9); color: var(--text, #1a1a1a); transition: 0.3s; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background: var(--nav-bg, #fff); box-shadow:0 2px 10px rgba(0,0,0,0.08); position:sticky; top:0; z-index:10; }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin:0; padding:0;
+      background: var(--bg, #f9f9f9);
+      color: var(--text, #1a1a1a);
+      transition: 0.3s;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:20px 40px;
+      background: var(--nav-bg, #fff);
+      box-shadow:0 2px 10px rgba(0,0,0,0.08);
+      position:sticky; top:0; z-index:20;
+    }
+
     header h1 { font-size:1.8rem; }
-    nav a { margin-left:20px; text-decoration:none; font-weight:600; color: var(--text, #1a1a1a); transition:0.3s; }
+
+    nav {
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+
+    nav a {
+      text-decoration:none;
+      font-weight:600;
+      color: var(--text, #1a1a1a);
+      transition:0.3s;
+    }
+
     nav a:hover { color: var(--accent, #2b8a6e); }
+
+    /* ===== MENU MOBILE ===== */
+    .menu-toggle {
+      display:none;
+      flex-direction:column;
+      cursor:pointer;
+      gap:5px;
+    }
+
+    .menu-toggle span {
+      width:25px; height:3px;
+      background: var(--text,#1a1a1a);
+      border-radius:5px;
+      transition:0.3s;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        position:fixed;
+        top:0; right:-100%;
+        background: var(--nav-bg,#fff);
+        height:100vh;
+        width:220px;
+        flex-direction:column;
+        align-items:flex-start;
+        padding:80px 20px;
+        box-shadow:-2px 0 10px rgba(0,0,0,0.1);
+        transition: right 0.4s ease;
+      }
+
+      nav.active { right:0; }
+
+      .menu-toggle { display:flex; }
+
+      header h1 { font-size:1.4rem; }
+    }
+
+    /* ===== CONTEÚDO ===== */
     main { padding:40px 20px; max-width:1200px; margin:0 auto; }
     section { margin-bottom:60px; }
     h2 { font-size:2rem; margin-bottom:20px; color: var(--accent, #2b8a6e); }
+
     .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
-    .card { background: var(--card, #fff); border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; }
+
+    .card {
+      background: var(--card, #fff);
+      border-radius:12px;
+      padding:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
     .card:hover { transform: translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.12); }
-    .card h3 { margin-top:10px; margin-bottom:10px; }
-    .btn { padding:10px 18px; border-radius:6px; border:2px solid var(--accent, #2b8a6e); background:transparent; color: var(--accent, #2b8a6e); font-weight:600; cursor:pointer; transition:0.3s; text-decoration:none; display:inline-block; margin-top:10px; }
+
+    .btn {
+      padding:10px 18px;
+      border-radius:6px;
+      border:2px solid var(--accent, #2b8a6e);
+      background:transparent;
+      color: var(--accent, #2b8a6e);
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      text-decoration:none;
+      display:inline-block;
+      margin-top:10px;
+    }
+
     .btn:hover { background: var(--accent, #2b8a6e); color:#fff; }
-    footer { padding:40px 20px; text-align:center; border-top:1px solid var(--border, #e0e0e0); background: var(--nav-bg, #fff); }
-    #theme-toggle { position:fixed; bottom:25px; right:25px; background:var(--accent,#2b8a6e); color:#fff; border:none; border-radius:50%; width:45px; height:45px; cursor:pointer; font-size:1.2rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s; }
+
+    footer {
+      padding:40px 20px;
+      text-align:center;
+      border-top:1px solid var(--border, #e0e0e0);
+      background: var(--nav-bg, #fff);
+    }
+
+    #theme-toggle {
+      position:fixed;
+      bottom:25px;
+      right:25px;
+      background:var(--accent,#2b8a6e);
+      color:#fff;
+      border:none;
+      border-radius:50%;
+      width:45px; height:45px;
+      cursor:pointer;
+      font-size:1.2rem;
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
+      transition:0.3s;
+      z-index:50;
+    }
+
     #theme-toggle:hover { transform:scale(1.1); }
 
     /* Scroll Reveal */
@@ -36,110 +151,81 @@
 </head>
 
 <body>
-<header class="reveal">
-  <h1>Bem-vindo, <%= usuario %>!</h1>
-  <nav>
-    <a href="/home">Início</a>
-    <a href="/curso2">Cursos</a>
-    <a href="/explore2">Explorar</a>
-    <a href="/opt2">Oportunidades</a>
-    <a href="/help2">Ajuda</a>
-    <a href="/sair">Sair</a>
-  </nav>
-</header>
+  <% if (safeTitulo !== 'Login' && safeTitulo !== 'Registro') { %>
+  <header class="reveal">
+    <% if (safeUsuario) { %>
+      <h1>Bem-vindo, <%= safeUsuario %>!</h1>
+    <% } else { %>
+      <h1>Bem-vindo à Noesis!</h1>
+    <% } %>
 
-<main>
-  <!-- Estatísticas do usuário -->
-  <section class="stats reveal">
-    <div class="stat">
-      <p>Cursos Concluídos</p>
-      <h3>5</h3>
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span><span></span><span></span>
     </div>
-    <div class="stat">
-      <p>Oportunidades Aplicadas</p>
-      <h3>3</h3>
-    </div>
-    <div class="stat">
-      <p>Projetos em Andamento</p>
-      <h3>2</h3>
-    </div>
-  </section>
 
-  <!-- Cursos do usuário -->
-  <section class="user-courses reveal">
-    <h2>Seus Cursos</h2>
-    <div class="cards-grid">
-      <div class="card reveal">
-        <h3>Desenvolvimento Web</h3>
-        <p>Aprenda HTML, CSS, JS e frameworks modernos em projetos reais.</p>
-        <a href="/curso2" class="btn">Continuar</a>
-      </div>
-      <div class="card reveal">
-        <h3>Design de Interface</h3>
-        <p>Domine UX/UI e ferramentas como Figma para criar interfaces incríveis.</p>
-        <a href="/curso2" class="btn">Continuar</a>
-      </div>
-      <div class="card reveal">
-        <h3>Marketing Digital</h3>
-        <p>Aprenda estratégias digitais que geram resultados reais.</p>
-        <a href="/curso2" class="btn">Continuar</a>
-      </div>
-    </div>
-  </section>
+    <nav id="nav-menu">
+      <% if (safeUsuario) { %>
+        <a href="/home">Início</a>
+        <a href="/curso2">Cursos</a>
+        <a href="/explore2">Explorar</a>
+        <a href="/opt2">Oportunidades</a>
+        <a href="/help2">Ajuda</a>
+        <a href="/sair">Sair</a>
+      <% } else { %>
+        <a href="/index">Início</a>
+        <a href="/curso">Cursos</a>
+        <a href="/explore">Explorar</a>
+        <a href="/opt">Oportunidades</a>
+        <a href="/help">Ajuda</a>
+        <a href="/login">Login</a>
+        <a href="/registro" class="btn">Registrar-se</a>
+      <% } %>
+    </nav>
+  </header>
+  <% } %>
 
-  <!-- Notícias e novidades -->
-  <section class="news reveal">
-    <h2>Novidades e Insights</h2>
-    <div class="cards-grid">
-      <div class="card reveal">
-        <h3>🚀 SEO Avançado</h3>
-        <p>Dicas essenciais para otimizar sites em 2025.</p>
-        <a href="#" class="btn">Ler Mais</a>
-      </div>
-      <div class="card reveal">
-        <h3>🎨 Branding Moderno</h3>
-        <p>Como impactar clientes com identidades visuais.</p>
-        <a href="#" class="btn">Ler Mais</a>
-      </div>
-      <div class="card reveal">
-        <h3>💼 Mercado Digital</h3>
-        <p>Tendências de carreira e inteligência artificial.</p>
-        <a href="#" class="btn">Ler Mais</a>
-      </div>
-    </div>
-  </section>
-</main>
+  <main>
+    <%- body %>
+  </main>
 
-<footer class="reveal">
-  <p>© 2025 FutureFest Noesis — Todos os direitos reservados.</p>
-</footer>
+  <footer class="reveal">
+    <p>© 2025 FutureFest Noesis — Todos os direitos reservados.</p>
+  </footer>
 
-<button id="theme-toggle">🌙</button>
+  <button id="theme-toggle">🌙</button>
 
-<script>
-const toggleBtn = document.getElementById("theme-toggle");
-const currentTheme = localStorage.getItem("theme") || "light";
-document.body.setAttribute("data-theme", currentTheme);
-toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
-toggleBtn.addEventListener("click", () => {
-  const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.body.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
-  toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
-});
+  <script>
+    // Toggle de tema
+    const toggleBtn = document.getElementById("theme-toggle");
+    const currentTheme = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-theme", currentTheme);
+    toggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+    toggleBtn.addEventListener("click", () => {
+      const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+      toggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+    });
 
-// Scroll reveal
-const reveals = document.querySelectorAll('.reveal');
-function scrollReveal() {
-  const triggerBottom = window.innerHeight * 0.85;
-  reveals.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if(top < triggerBottom) el.classList.add('active');
-  });
-}
-window.addEventListener('scroll', scrollReveal);
-scrollReveal();
-</script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    function scrollReveal() {
+      const triggerBottom = window.innerHeight * 0.85;
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if(top < triggerBottom) el.classList.add('active');
+      });
+    }
+    window.addEventListener('scroll', scrollReveal);
+    scrollReveal();
+
+    // Menu hambúrguer
+    const toggle = document.getElementById('menu-toggle');
+    const nav = document.getElementById('nav-menu');
+    toggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      toggle.classList.toggle('open');
+    });
+  </script>
 </body>
 </html>
-
