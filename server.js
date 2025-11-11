@@ -5,19 +5,30 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressLayouts = require('express-ejs-layouts');
 
-const User = require('./models/user');
-const Course = require('./models/course');
+const User = require('./models/user1');
+const Course = require('./models/curso1');
 
 const app = express();
 const porta = 3000;
 
 // ===== Conexão com MongoDB Atlas =====
-mongoose.connect('mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/sistemaLogin', {
+const MONGO_URI = 'mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/sistemaLogin?retryWrites=true&w=majority';
+
+console.log('🟡 Tentando conectar ao MongoDB Atlas...');
+
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 15000, // aumenta tempo de espera da conexão
 })
   .then(() => console.log('✅ Conectado ao MongoDB Atlas'))
-  .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
+  .catch(err => {
+    console.error('❌ Erro ao conectar ao MongoDB:');
+    console.error(err.message);
+    process.exit(1); // encerra o servidor se não conectar
+  });
+
+
 
 // ===== Configuração do EJS =====
 app.set('view engine', 'ejs');
@@ -43,43 +54,20 @@ app.use((req, res, next) => {
 
 // ===== Função para proteger rotas =====
 function protegerRota(req, res, next) {
-  if (req.session.usuario) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
+  if (req.session.usuario) next();
+  else res.redirect('/login');
 }
 
 // ===== ROTAS PÚBLICAS =====
 app.get('/', (req, res) => res.redirect('/index'));
 
-app.get('/index', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
-});
-
-app.get('/explore', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'explore.html'));
-});
-
-app.get('/curso', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'curso.html'));
-});
-
-app.get('/registro', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'registro.html'));
-});
-
-app.get('/help', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'help-center.html'));
-});
-
-app.get('/opt', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html'));
-});
-
-app.get('/erro', (req, res) => {
-  res.sendFile(path.join(__dirname, 'HTML', 'erro.html'));
-});
+app.get('/index', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'index.html')));
+app.get('/explore', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'explore.html')));
+app.get('/curso', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'curso.html')));
+app.get('/registro', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'registro.html')));
+app.get('/help', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'help-center.html')));
+app.get('/opt', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'oportunidades.html')));
+app.get('/erro', (req, res) => res.sendFile(path.join(__dirname, 'HTML', 'erro.html')));
 
 app.get('/login', (req, res) => {
   res.render('login', { layout: false, titulo: 'Login', erro: null });
@@ -139,25 +127,23 @@ app.get('/sair', (req, res) => {
 
 // ===== ROTAS PROTEGIDAS =====
 app.get('/home', protegerRota, (req, res) => {
-  res.render('home', { usuario: req.session.usuario, titulo: 'Início' });
+  res.render('home', { 
+    layout: false, 
+    titulo: 'Início', 
+    usuario: req.session.usuario, 
+    tema: req.session.tema || 'claro'
+  });
 });
 
+
 app.get('/curso2', protegerRota, async (req, res) => {
-  const cursos = await Course.find(); // Mostra todos os cursos disponíveis
+  const cursos = await Course.find();
   res.render('curso2', { usuario: req.session.usuario, cursos, titulo: 'Cursos' });
 });
 
-app.get('/explore2', protegerRota, (req, res) => {
-  res.render('explore2', { usuario: req.session.usuario, titulo: 'Explorar' });
-});
-
-app.get('/opt2', protegerRota, (req, res) => {
-  res.render('opt2', { usuario: req.session.usuario, titulo: 'Oportunidades' });
-});
-
-app.get('/help2', protegerRota, (req, res) => {
-  res.render('help2', { usuario: req.session.usuario, titulo: 'Ajuda' });
-});
+app.get('/explore2', protegerRota, (req, res) => res.render('explore2', { usuario: req.session.usuario, titulo: 'Explorar' }));
+app.get('/opt2', protegerRota, (req, res) => res.render('opt2', { usuario: req.session.usuario, titulo: 'Oportunidades' }));
+app.get('/help2', protegerRota, (req, res) => res.render('help2', { usuario: req.session.usuario, titulo: 'Ajuda' }));
 
 // ===== ADICIONAR CURSO AO USUÁRIO =====
 app.post('/adicionar-curso', protegerRota, async (req, res) => {

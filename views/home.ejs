@@ -4,30 +4,257 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= titulo %></title>
-  <link rel="stylesheet" href="/home1.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde: #2b8a6e;
+      --verde-escuro: #1f6c56;
+      --cinza-fundo: #f4f6f8;
+      --branco: #ffffff;
+      --texto: #1a1a1a;
+      --sombra: 0 4px 15px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+      --transicao: 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--cinza-fundo);
+      color: var(--texto);
+      overflow-x: hidden;
+      transition: background var(--transicao);
+    }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--branco);
+      padding: 0.8rem 1.5rem;
+      box-shadow: var(--sombra);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .menu-toggle {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--verde);
+      transition: transform 0.2s;
+    }
+
+    .menu-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    /* MENU LATERAL */
+    #menu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 240px;
+      height: 100vh;
+      background-color: var(--branco);
+      box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+      transition: left var(--transicao);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      padding-top: 90px;
+    }
+
+    #menu.ativo {
+      left: 0;
+    }
+
+    #menu a {
+      text-decoration: none;
+      color: var(--texto);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all var(--transicao);
+      border-left: 3px solid transparent;
+    }
+
+    #menu a:hover {
+      background-color: rgba(43, 138, 110, 0.1);
+      border-left: 3px solid var(--verde);
+      padding-left: 35px;
+    }
+
+    #menu a span {
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* CONTEÚDO */
+    main {
+      padding: 2rem 1.5rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .perfil {
+      display: flex;
+      align-items: center;
+      background: var(--branco);
+      box-shadow: var(--sombra);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 30px;
+      transition: transform 0.3s ease;
+    }
+
+    .perfil:hover {
+      transform: translateY(-3px);
+    }
+
+    .foto-perfil {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--verde);
+      margin-right: 20px;
+    }
+
+    .info-usuario h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--verde-escuro);
+    }
+
+    .info-usuario p {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    .progresso {
+      background: var(--branco);
+      box-shadow: var(--sombra);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+    }
+
+    .progresso h3 {
+      color: var(--verde);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .lista-cursos {
+      list-style: none;
+      padding: 0;
+    }
+
+    .lista-cursos li {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .barra-progresso {
+      width: 100%;
+      background-color: #e6e6e6;
+      height: 10px;
+      border-radius: 10px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .preenchimento {
+      height: 100%;
+      background-color: var(--verde);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    a {
+      color: var(--verde);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* RESPONSIVO */
+    @media (max-width: 700px) {
+      .perfil {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .foto-perfil {
+        margin: 0 0 10px 0;
+      }
+
+      #menu {
+        width: 200px;
+      }
+
+      .navbar {
+        padding: 0.7rem 1rem;
+      }
+
+      .logo img {
+        height: 35px;
+      }
+    }
+  </style>
 </head>
 
-<body class="<%= tema === 'escuro' ? 'dark-mode' : '' %>">
+<body>
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-    <h1>FutureFest Noesis</h1>
-    <nav id="menu">
-      <a href="/home">Início</a>
-      <a href="/curso2">Cursos</a>
-      <a href="/explore2">Explorar</a>
-      <a href="/opt2">Oportunidades</a>
-      <a href="/help2">Ajuda</a>
-      <a href="/sair" class="logout">Sair</a>
-    </nav>
+    <div class="logo">
+      <img src="/logo.png" alt="Logo FutureFest Noesis">
+    </div>
   </header>
 
-  <main class="conteudo">
+  <!-- MENU LATERAL -->
+  <nav id="menu">
+    <a href="/home"><span>🏠</span> Início</a>
+    <a href="/curso2"><span>📘</span> Cursos</a>
+    <a href="/explore2"><span>🌐</span> Explorar</a>
+    <a href="/opt2"><span>💼</span> Oportunidades</a>
+    <a href="/help2"><span>🧭</span> Ajuda</a>
+    <a href="/sair"><span>🚪</span> Sair</a>
+  </nav>
+
+  <main>
     <section class="perfil">
-      <img src="<%= usuario && usuario.foto ? usuario.foto : '/img/user-default.png' %>" alt="Foto de perfil" class="foto-perfil">
+      <img src="<%= usuario && usuario.foto ? usuario.foto : '/perfil.jpg' %>" alt="Foto de perfil" class="foto-perfil">
       <div class="info-usuario">
         <h2>Olá, <%= usuario ? usuario.usuario : 'Visitante' %> 👋</h2>
-        <p>Bem-vindo de volta à plataforma!</p>
+        <p>Bem-vindo de volta à sua jornada de aprendizado.</p>
       </div>
     </section>
 
