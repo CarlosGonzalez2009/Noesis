@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -9,10 +10,10 @@ const User = require('./models/user1');
 const Course = require('./models/curso1');
 
 const app = express();
-const porta = 3000;
+const porta = process.env.PORT || 3000;
 
 // ===== Conexão com MongoDB Atlas =====
-const MONGO_URI = 'mongodb+srv://Murilok7:Ling153423@clusterdopai.uljl3es.mongodb.net/sistemaLogin?retryWrites=true&w=majority';
+const MONGO_URI = process.env.MONGO_URI; 
 
 console.log('🟡 Tentando conectar ao MongoDB Atlas...');
 
@@ -41,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
-  secret: 'segredo-super-seguro',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
